@@ -2,7 +2,7 @@ import locale
 import platform
 import pandas as pd
 
-from pokemondraw import bulbasaur, dragonite, charizard
+from pokemondraw import bulbasaur, dragonite, charizard, __pokemon_draw, charmeleon
 from pathlib import Path
 
 if platform.system() == "Windows":
@@ -100,6 +100,19 @@ def __search_pokemon_by_type (pokedex, pokemon_type):
 
     pass
 
+def __list_of_games():
+
+    games = ["Red, Blue, Green & Yellow ", 
+                     "Gold, Silver & Crystal", 
+                     "Ruby, Sapphire & Emerald", 
+                     "Diamond, Pearl & Platinum", 
+                     "Black & White", 
+                     "X & Y", 
+                     "Sun & Moon"]
+    
+    for i in games:
+        print(i)
+
 def __list_of_generations(pokedex):
 
     generation = []
@@ -132,6 +145,8 @@ def __list_of_generations(pokedex):
     pass
 
 def __pokemon_list(pokedex):
+
+    charmeleon()
 
     pokemon_list = pokedex[[
                             "pokedex_number", 
@@ -204,8 +219,10 @@ def __search_pokemon_by_generation(pokedex):
 def __menu():
 
     option = -1
-    print(ash)
-    menu = f""""POKEDEX --- Version {version}
+
+    print(__pokemondraw())
+
+    menu = f"""POKEDEX --- Version {version}
 
     1 - List all pokemon throughout all generations
     2 - List all generations main games
@@ -216,9 +233,7 @@ def __menu():
 
     """
 
-    
-    while option != 0:
-        
+    while option != 0:        
 
         try:
 
@@ -235,11 +250,11 @@ def __menu():
 
                 # 1 - List all pokemon throughout all generations
                 case 1: 
-                    return print(__pokemon_list(pokedex))
+                    print(__pokemon_list(pokedex))
                 
                 # 2 - List all generations main games
                 case 2: 
-                    return __list_of_generations(pokedex)
+                    __list_of_generations(pokedex)
                 
                 # 3 - Search all pokemon of a specific type
                 case 3: 
@@ -250,9 +265,11 @@ def __menu():
                             # List all types of pokemon
                             __type_list(pokedex)
 
-                            pokemon_type = input(f"Digit the pokemon type")
+                            pokemon_type = input(f"Digit the pokemon type: ")
                             
-                            return __search_pokemon_by_type(pokedex, pokemon_type.lower())
+                            print(__search_pokemon_by_type(pokedex, pokemon_type.lower()))
+
+                            break
                         
                         except ValueError:
 
@@ -262,11 +279,11 @@ def __menu():
                 
                 #4 - Search all pokemon from a specific generation
                 case 4: 
-                    return ""
+                    continue
                 
                 # 5 - List all pokemon types
                 case 5: 
-                    return ""
+                    continue
                 
                 # 0 - Exit
                 case 0: 
@@ -276,28 +293,30 @@ def __menu():
         except ValueError:
             print(f"Invalid option!")
 
-        break
+            continue
 
-
-    
-
-    
-
-    
 
 
 
 
 ### Sessão de testes
  
+
+#__menu()
+
+
 # List all pokemons
+print("Cheguei")
+__pokemon_draw()
 print(__pokemon_list(pokedex))
+print("Terminei")
 
-bulbasaur()
-dragonite()
-charizard()
+#bulbasaur()
+#dragonite()
+#charizard()
 
-__menu()
+#__list_of_games()
+
 
 # List all types of pokemon
 #__type_list(pokedex)
