@@ -2,12 +2,34 @@ import locale
 import platform
 import pandas as pd
 
+from pokemondraw import bulbasaur, dragonite, charizard
 from pathlib import Path
 
 if platform.system() == "Windows":
     locale.setlocale(locale.LC_ALL, 'Portuguese_Brazil')
 else:
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
+version = "0.1v"
+
+ash = """
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠟⠛⠛⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⡿⠛⢉⣠⣤⣶⣶⣶⣶⣶⣦⣄⠈⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⠏⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⡏⠀⣿⣿⣿⣿⠟⠋⡉⠙⣿⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⡇⠀⣿⣿⡿⠃⠠⠾⠿⠿⠿⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⡇⠀⣿⣿⣦⣤⣤⣤⣤⣤⣴⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⠇⠀⠉⠉⠁⠀⠀⠀⠀⠉⠉⠛⠛⠿⠿⠇⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿
+    ⣿⠏⠁⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⢈⣹⣿⣿⣿⣿
+    ⣿⣷⣶⠖⠀⠀⢻⣿⣿⣿⡇⢀⣠⣴⣶⣶⣶⣿⣿⡇⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿
+    ⣿⣿⣧⠀⠀⠀⢸⠁⣠⠈⢻⣿⣿⣿⠁⣤⠈⢿⣿⣤⣴⠀⠀⠀⠀⠀⠙⢿⣿⣿
+    ⣿⡿⠋⠀⠀⠀⢸⠀⠙⠀⢸⣿⣿⣿⠀⠹⠀⢸⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⣨⣿
+    ⣿⣦⣄⡀⠀⠀⣾⣤⣤⣤⣾⣿⣿⣿⣤⣤⣤⣿⣿⠛⠁⠀⠀⠀⠐⣶⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣷⠀⢿⣿⣿⡁⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⣀⣀⣤⣼⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣦⡈⠙⠻⢷⣤⣀⣀⣠⡾⠿⠛⠋⢉⣀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⡈⠉⠉⣁⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    """
+
 
 
 # Seek Pokemon csv file and load to a Pandas dataframe
@@ -21,6 +43,8 @@ def seek_pokemon_file():
             # Verify if the file exists in the current directory
             if not Path(archive).is_file():
                 print(f"File '{archive}' not found. Please try again.")
+
+                input("Check file and press enter to continue")
                 continue
 
             # Read the spreadsheet using Pandas
@@ -107,6 +131,27 @@ def __list_of_generations(pokedex):
 
     pass
 
+def __pokemon_list(pokedex):
+
+    pokemon_list = pokedex[[
+                            "pokedex_number", 
+                            "name",
+                            "japanese_name",
+                            "classfication",
+                            "type1", 
+                            "type2",
+                            "generation",
+                            "height_m",
+                            "weight_kg",
+                            "attack",
+                            "defense",
+                            "speed",
+                            "hp",
+                            "sp_attack",
+                            "sp_defense"
+                            ]].reset_index(drop = True)
+
+    return pokemon_list
 
 
 def __search_pokemon_by_generation(pokedex):
@@ -155,25 +200,116 @@ def __search_pokemon_by_generation(pokedex):
     pass
 
 
+# Create a menu with system options
+def __menu():
+
+    option = -1
+    print(ash)
+    menu = f""""POKEDEX --- Version {version}
+
+    1 - List all pokemon throughout all generations
+    2 - List all generations main games
+    3 - Search all pokemon of a specific type
+    4 - Search all pokemon from a specific generation
+    5 - List all pokemon types
+    0 - Exit
+
+    """
+
+    
+    while option != 0:
+        
+
+        try:
+
+            print(menu)
+
+            option = int(input(f"Choose option number: "))
+            
+            options = [1,2,3,4,5,6,0]
+
+            if option not in options:
+                continue
+
+            match option:
+
+                # 1 - List all pokemon throughout all generations
+                case 1: 
+                    return print(__pokemon_list(pokedex))
+                
+                # 2 - List all generations main games
+                case 2: 
+                    return __list_of_generations(pokedex)
+                
+                # 3 - Search all pokemon of a specific type
+                case 3: 
+
+                    while True:
+                        try:
+
+                            # List all types of pokemon
+                            __type_list(pokedex)
+
+                            pokemon_type = input(f"Digit the pokemon type")
+                            
+                            return __search_pokemon_by_type(pokedex, pokemon_type.lower())
+                        
+                        except ValueError:
+
+                            print("Invalid Option.")
+
+
+                
+                #4 - Search all pokemon from a specific generation
+                case 4: 
+                    return ""
+                
+                # 5 - List all pokemon types
+                case 5: 
+                    return ""
+                
+                # 0 - Exit
+                case 0: 
+                    break
+            
+
+        except ValueError:
+            print(f"Invalid option!")
+
+        break
+
+
+    
+
+    
+
+    
 
 
 
 
 ### Sessão de testes
  
+# List all pokemons
+print(__pokemon_list(pokedex))
+
+bulbasaur()
+dragonite()
+charizard()
+
+__menu()
 
 # List all types of pokemon
-__type_list(pokedex)
+#__type_list(pokedex)
 
 # Resume of each generation
-__list_of_generations(pokedex)
+#__list_of_generations(pokedex)
 
 # Search for all pokemon of a specific type, in this case, "fire"
-print(__search_pokemon_by_type(pokedex, "fire"))
+#print(__search_pokemon_by_type(pokedex, "fire"))
 
 # Search for all pokemon of a specific generation, in this case, "Generation 1"
-__search_pokemon_by_generation(pokedex)
-
+#__search_pokemon_by_generation(pokedex)
 
 
 
