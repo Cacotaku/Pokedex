@@ -1,3 +1,8 @@
+### To do list:
+# - Create a menu with system options
+# - List all pokemon of specific type (list types, then, ask desired type and show results)
+
+
 import locale
 import platform
 import pandas as pd
@@ -61,6 +66,9 @@ def seek_pokemon_file():
 
 # Program boot message
 def __initialyze():
+
+    __pokemon_draw() # Print Pokemon Logo
+
     print(f"""--------------- Pokemon Data Analysis ------------------
 
         Analysis of data from the Pokemon universe (Gen I to VII)
@@ -95,6 +103,7 @@ def __type_list(pokedex):
 
     pass
 
+# Search for all pokemon of a specific type, in this case, "fire"
 def __search_pokemon_by_type (pokedex, pokemon_type):
     return pokedex[(pokedex["type1"] == pokemon_type.lower()) | (pokedex["type2"] == pokemon_type.lower())][["pokedex_number", "name", "type1", "type2"]].reset_index(drop=True)   
 
@@ -102,13 +111,13 @@ def __search_pokemon_by_type (pokedex, pokemon_type):
 
 def __list_of_games():
 
-    games = ["Red, Blue, Green & Yellow ", 
-                     "Gold, Silver & Crystal", 
-                     "Ruby, Sapphire & Emerald", 
-                     "Diamond, Pearl & Platinum", 
-                     "Black & White", 
-                     "X & Y", 
-                     "Sun & Moon"]
+    games = ["Generation I: Red, Blue, Green & Yellow ", 
+                     "Generation II: Gold, Silver & Crystal", 
+                     "Generation III: Ruby, Sapphire & Emerald", 
+                     "Generation IV: Diamond, Pearl & Platinum", 
+                     "Generation V: Black & White", 
+                     "Generation VI: X & Y", 
+                     "Generation VII: Sun & Moon"]
     
     for i in games:
         print(i)
@@ -144,9 +153,13 @@ def __list_of_generations(pokedex):
 
     pass
 
+# List all pokemon throughout all generations with their respective attributes
+
 def __pokemon_list(pokedex):
 
     charmeleon()
+
+    print(f"List of all Pokemon throughout all generations:\n")
 
     pokemon_list = pokedex[[
                             "pokedex_number", 
@@ -165,11 +178,60 @@ def __pokemon_list(pokedex):
                             "sp_attack",
                             "sp_defense"
                             ]].reset_index(drop = True)
+    
+    print(f"Total number of Pokemon: " + str(pokedex["pokedex_number"].count()) + "\n")
 
     return pokemon_list
 
+# Search for a specific pokemon by its pokedex number and return its attributes
+def __search_pokemon(pokedex):
+
+    while True:
+        try:
+            pokemon_number = int(input(f"Digit the pokemon number (1-{pokedex['pokedex_number'].max()}): "))
+            
+            if pokemon_number < 1 or pokemon_number > pokedex["pokedex_number"].max():
+
+                print(f"Invalid input. Please enter a number between 1 and {pokedex['pokedex_number'].max()}.")
+
+                continue
+
+            else:
+
+                break
+
+        except ValueError:
+
+            print(f"Invalid input. Please enter a number between 1 and {pokedex['pokedex_number'].max()}.")
+
+            continue
+
+
+    pokemon = pokedex[pokedex["pokedex_number"] == pokemon_number][[
+                            "pokedex_number", 
+                            "name",
+                            "japanese_name",
+                            "classfication",
+                            "type1", 
+                            "type2",
+                            "generation",
+                            "height_m",
+                            "weight_kg",
+                            "attack",
+                            "defense",
+                            "speed",
+                            "hp",
+                            "sp_attack",
+                            "sp_defense"
+                            ]].reset_index(drop = True)
+    
+    print(pokemon)
+
+    pass
+
 
 def __search_pokemon_by_generation(pokedex):
+
     def search(generation):
 
         pokemon_list =  pokedex[pokedex["generation"] == generation][[
@@ -307,8 +369,15 @@ def __menu():
 
 # List all pokemons
 print("Cheguei")
-__pokemon_draw()
-print(__pokemon_list(pokedex))
+
+
+#__pokemon_list(pokedex) # List all pokemon throughout all generations with their respective attributes
+#__search_pokemon(pokedex) # Search for a specific pokemon by its pokedex number and return its attributes
+#__list_of_generations(pokedex) # Resume of each generation with the number of pokemon in each one and the main games of each generation
+#__list_of_games() # List all main games of each generation
+
+__type_list(pokedex)
+__search_pokemon_by_type(pokedex, "fire") # Create funcion to show types, then, search for all pokemon of a specific type, in this case, "fire"
 print("Terminei")
 
 #bulbasaur()
