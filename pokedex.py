@@ -1,13 +1,10 @@
-### To do list:
-# - Create a menu with system options
-# - List all pokemon of specific type (list types, then, ask desired type and show results)
-
-
 import locale
-import platform
+import os
 import pandas as pd
+import platform
+import sys
 
-from pokemondraw import bulbasaur, dragonite, charizard, __pokemon_draw, charmeleon
+from pokemondraw import bulbasaur, caterpie, dragonite, charizard, __pokemon_draw, charmeleon, wartortle, venosaur, squirtle, blastoise, ivysaur, charmander, ash, caterpie
 from pathlib import Path
 
 if platform.system() == "Windows":
@@ -15,27 +12,25 @@ if platform.system() == "Windows":
 else:
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
-version = "0.1v"
+version = "1.0v"
 
-ash = """
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠟⠛⠛⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⡿⠛⢉⣠⣤⣶⣶⣶⣶⣶⣦⣄⠈⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⠏⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⡏⠀⣿⣿⣿⣿⠟⠋⡉⠙⣿⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⡇⠀⣿⣿⡿⠃⠠⠾⠿⠿⠿⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⡇⠀⣿⣿⣦⣤⣤⣤⣤⣤⣴⣿⣿⣿⣿⡇⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⠇⠀⠉⠉⠁⠀⠀⠀⠀⠉⠉⠛⠛⠿⠿⠇⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿
-    ⣿⠏⠁⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⢈⣹⣿⣿⣿⣿
-    ⣿⣷⣶⠖⠀⠀⢻⣿⣿⣿⡇⢀⣠⣴⣶⣶⣶⣿⣿⡇⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿
-    ⣿⣿⣧⠀⠀⠀⢸⠁⣠⠈⢻⣿⣿⣿⠁⣤⠈⢿⣿⣤⣴⠀⠀⠀⠀⠀⠙⢿⣿⣿
-    ⣿⡿⠋⠀⠀⠀⢸⠀⠙⠀⢸⣿⣿⣿⠀⠹⠀⢸⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⣨⣿
-    ⣿⣦⣄⡀⠀⠀⣾⣤⣤⣤⣾⣿⣿⣿⣤⣤⣤⣿⣿⠛⠁⠀⠀⠀⠐⣶⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣷⠀⢿⣿⣿⡁⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⣀⣀⣤⣼⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣦⡈⠙⠻⢷⣤⣀⣀⣠⡾⠿⠛⠋⢉⣀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⡈⠉⠉⣁⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    """
+# Set option to display all rows
+pd.set_option('display.max_rows', None)
 
 
+# -- Main Functions (lin 23 - 150)
+
+# Program boot message
+def __initialyze():
+
+    dragonite() # Print Dragonite
+
+    print(f"""--------------- Pokemon Data Analysis ------------------
+
+        Analysis of data from the Pokemon universe (Gen I to VII)
+        Author - Paulo Izidoro
+        Data -  {pd.Timestamp.now()}\n\n""")
+    
 
 # Seek Pokemon csv file and load to a Pandas dataframe
 def seek_pokemon_file():
@@ -49,8 +44,8 @@ def seek_pokemon_file():
             if not Path(archive).is_file():
                 print(f"File '{archive}' not found. Please try again.")
 
-                input("Check file and press enter to continue")
-                continue
+                input("Check file and press enter to continue\n")
+                sys.exit()
 
             # Read the spreadsheet using Pandas
             df_base = pd.read_csv(archive, encoding = "UTF-8", sep = "," )
@@ -64,31 +59,105 @@ def seek_pokemon_file():
         except Exception as e:
             print(f"An error occurred while trying to read the file: {e}. Please try again.")
 
-# Program boot message
-def __initialyze():
+# Create a menu with system options
+def __menu(df_pokedex):
 
-    __pokemon_draw() # Print Pokemon Logo
+    option = -1
 
-    print(f"""--------------- Pokemon Data Analysis ------------------
+    __pokemon_draw() # Print Pokemon logo
 
-        Analysis of data from the Pokemon universe (Gen I to VII)
-        Author - Paulo Izidoro
-        Data -  {pd.Timestamp.now()}\n\n""")
-    
-pokedex = seek_pokemon_file()
-__initialyze()
+    menu = f"""POKEDEX --- Version {version}
 
+    1 - List all pokemons throughout all generations
+    2 - Search Pokemon (by pokedex number or name)
+    3 - List all pokemons of a specific type
+    4 - Search all exclusive pokemons from a specific generation
+    5 - List all games in the series
+    6 - List of all generations of pokemon games
+    7 - Clean screen
+    0 - Exit
 
-#print(pokedex["japanese_name"].tail(15))
+    """
 
-#print(pokedex["type1"].unique().tolist())
-#print(pokedex["type2"].dropna().unique().tolist())
+    while option != 0:        
+
+        try:
+
+            print(menu)
+
+            option = int(input(f"Choose option number: "))
+            
+            options = [1,2,3,4,5,6,7,0]
+
+            if option not in options:
+
+                print(f"Invalid option!")
+                print("\nPlease, insert a valid option.\n")
+
+                continue
+
+            match option:
+
+                # 1 - List all pokemon throughout all generations
+                case 1: 
+                    __pokemon_list(df_pokedex)
+                
+                # 2 - Search Pokemon (by pokedex number or name)
+                case 2: 
+                    __search_pokemon(df_pokedex)
+                
+                # 3 - List all pokemon of a specific type
+                case 3: 
+                    __list_pokemon_by_type(df_pokedex)
+                
+                #4 - Search all pokemon from a specific generation
+                case 4: 
+                    __search_pokemon_by_generation(df_pokedex)
+                
+                # 5 - List of all games in the series
+                case 5: 
+                    __list_of_games()
+                
+                # 6 - List of all pokemon throughout all generations with their respective attributes
+                case 6:
+                    __list_of_generations(df_pokedex)
+
+                # 7 - Clean Screen
+                case 7: 
+                    __cleanScreen()
+
+                # 0 - Exit
+                case 0: 
+
+                    # Draw Ash (Satoshi) trainer
+                    ash()
+
+                    break
+            
+
+        except ValueError:
+            print(f"Invalid option!")
+            print("\nPlease, insert a valid option.\n")
+
+            continue
+
+def main_page():
+
+    __initialyze()
+
+    pokedex = seek_pokemon_file()
+
+    return pokedex
+
+# -- End of Main Functions (lin 23 - 150)
+
+# -- Aux Functions (lin 156 - 173)
 
 # Return a list of dictionaries with the unique pokemon types and their respective index in a array
-def __type_list(pokedex):
+def __type_list(df_pokedex):
     
     # Create a list with all unique pokemon types
-    list = pokedex["type1"].sort_values().unique().tolist()
+    list = df_pokedex["type1"].sort_values().unique().tolist()
 
     ind = 0 
     type_list = []
@@ -103,65 +172,17 @@ def __type_list(pokedex):
 
     pass
 
-# Search for all pokemon of a specific type, in this case, "fire"
-def __search_pokemon_by_type (pokedex, pokemon_type):
-    return pokedex[(pokedex["type1"] == pokemon_type.lower()) | (pokedex["type2"] == pokemon_type.lower())][["pokedex_number", "name", "type1", "type2"]].reset_index(drop=True)   
+# -- Menu Option Functions (lin 177 - 512)
 
-    pass
+# 1 - List all pokemon throughout all generations with their respective attributes
+def __pokemon_list(df_pokedex):
 
-def __list_of_games():
-
-    games = ["Generation I: Red, Blue, Green & Yellow ", 
-                     "Generation II: Gold, Silver & Crystal", 
-                     "Generation III: Ruby, Sapphire & Emerald", 
-                     "Generation IV: Diamond, Pearl & Platinum", 
-                     "Generation V: Black & White", 
-                     "Generation VI: X & Y", 
-                     "Generation VII: Sun & Moon"]
-    
-    for i in games:
-        print(i)
-
-def __list_of_generations(pokedex):
-
-    generation = []
-    i = 0
-    while i < len(pokedex["generation"].unique()):
-
-        games = ["Red, Blue, Green & Yellow ", 
-                     "Gold, Silver & Crystal", 
-                     "Ruby, Sapphire & Emerald", 
-                     "Diamond, Pearl & Platinum", 
-                     "Black & White", 
-                     "X & Y", 
-                     "Sun & Moon"]
-        
-        generation.append({
-                        "Generation" : i + 1,
-                        "Games" : games[i],
-                        "count" : pokedex[pokedex["generation"] == i + 1]["pokedex_number"].count()
-                      })
-        
-        i += 1
-
-    for ill in generation:
-        print(f"Generation " + str(ill['Generation']) + "\n" +
-                "Games: " + ill['Games'] + "\n" +
-                "Number of Pokemon: " + str(ill['count'])+ "\n")
-
-    print("Total number of Pokemon: " + str(pokedex["pokedex_number"].count())) 
-
-    pass
-
-# List all pokemon throughout all generations with their respective attributes
-
-def __pokemon_list(pokedex):
-
+    #Draw Charmeleon Pokemon
     charmeleon()
 
-    print(f"List of all Pokemon throughout all generations:\n")
+    print(f"\nList of all Pokemons throughout all generations:\n")
 
-    pokemon_list = pokedex[[
+    pokemon_list = df_pokedex[[
                             "pokedex_number", 
                             "name",
                             "japanese_name",
@@ -179,62 +200,186 @@ def __pokemon_list(pokedex):
                             "sp_defense"
                             ]].reset_index(drop = True)
     
-    print(f"Total number of Pokemon: " + str(pokedex["pokedex_number"].count()) + "\n")
+    print(f"Total number of Pokemons: " + str(df_pokedex["pokedex_number"].count()) + "\n")
 
-    return pokemon_list
+    print(pokemon_list)
 
-# Search for a specific pokemon by its pokedex number and return its attributes
-def __search_pokemon(pokedex):
+    input("Press enter to continue...\n")
 
-    while True:
-        try:
-            pokemon_number = int(input(f"Digit the pokemon number (1-{pokedex['pokedex_number'].max()}): "))
-            
-            if pokemon_number < 1 or pokemon_number > pokedex["pokedex_number"].max():
+    pass
+
+
+# 2 - Search for a specific pokemon by its original pokedex number and return its attributes
+def __search_pokemon(df_pokedex):
+
+    # search for a specific pokemon by its original pokedex number
+    def __search_by_number(pokedex):
+        
+        while True:
+            try:
+                pokemon_number = int(input(f"Digit the pokemon number (1-{pokedex['pokedex_number'].max()}): "))
+                
+                if pokemon_number < 1 or pokemon_number > pokedex["pokedex_number"].max():
+
+                    print(f"Invalid input. Please enter a number between 1 and {pokedex['pokedex_number'].max()}.")
+
+                    continue
+
+                else:
+
+                    break
+
+            except ValueError:
 
                 print(f"Invalid input. Please enter a number between 1 and {pokedex['pokedex_number'].max()}.")
 
                 continue
 
-            else:
 
+        pokemon = pokedex[pokedex["pokedex_number"] == pokemon_number][[
+                                "pokedex_number", 
+                                "name",
+                                "japanese_name",
+                                "classfication",
+                                "type1", 
+                                "type2",
+                                "generation",
+                                "height_m",
+                                "weight_kg",
+                                "attack",
+                                "defense",
+                                "speed",
+                                "hp",
+                                "sp_attack",
+                                "sp_defense"
+                                ]].reset_index(drop = True)
+        
+        return pokemon   
+    
+    # Search for a specific pokemon by its name and return its attributes
+    def __search_by_name(pokedex):
+
+        while True:
+            try:
+                pokemon_name = input(f"Enter the pokemon name: ")
+                
+                if pokemon_name.lower() not in pokedex["name"].str.lower().values:
+
+                    print(f"Invalid input. Please enter a valid pokemon name.")
+
+                    continue
+
+                else:
+
+                    break
+
+            except ValueError:
+
+                print(f"Invalid input. Please enter a valid pokemon name.")
+
+                continue
+
+
+        pokemon = pokedex[pokedex["name"].str.lower() == pokemon_name.lower()][[
+                                "pokedex_number", 
+                                "name",
+                                "japanese_name",
+                                "classfication",
+                                "type1", 
+                                "type2",
+                                "generation",
+                                "height_m",
+                                "weight_kg",
+                                "attack",
+                                "defense",
+                                "speed",
+                                "hp",
+                                "sp_attack",
+                                "sp_defense"
+                                ]].reset_index(drop = True)
+        
+        return pokemon
+
+    while True:
+        try:    
+
+            #Draw Charmander Pokemon
+            charmander()
+
+            # Second Menu - Search Pokemon by pokedex number or name
+            print(f"\nSearch Pokemon by:\n")
+            print ("1 - Search by pokedex number\n" +
+                   "2 - Search by name\n" +
+                   "0 - Back to menu\n")
+            
+            search_option = int(input(f"Choose option number: "))   
+            options = [1,2,0]
+
+            if search_option not in options:
+
+                print("Invalid option. Please choose a valid option number.")
+
+                continue
+
+            else:
+                
                 break
 
         except ValueError:
 
-            print(f"Invalid input. Please enter a number between 1 and {pokedex['pokedex_number'].max()}.")
+            print(f"Invalid input.\nPlease choose a valid option number.\n")
 
             continue
 
+    match search_option:        
+        case 1:
+            print(f"\n{__search_by_number(df_pokedex)}")
 
-    pokemon = pokedex[pokedex["pokedex_number"] == pokemon_number][[
-                            "pokedex_number", 
-                            "name",
-                            "japanese_name",
-                            "classfication",
-                            "type1", 
-                            "type2",
-                            "generation",
-                            "height_m",
-                            "weight_kg",
-                            "attack",
-                            "defense",
-                            "speed",
-                            "hp",
-                            "sp_attack",
-                            "sp_defense"
-                            ]].reset_index(drop = True)
-    
-    print(pokemon)
+        case 2:
+            print(f"\n{__search_by_name(df_pokedex)}")
+        case 0:
+            return
+        
+    input("Press enter to continue...\n")
 
     pass
 
 
-def __search_pokemon_by_generation(pokedex):
+# 3 - Search for all pokemon of a specific type, in this case, "fire"
+def __list_pokemon_by_type (df_pokedex):
 
-    def search(generation):
+    #Draw Squirtle Pokemon
+    squirtle()
 
-        pokemon_list =  pokedex[pokedex["generation"] == generation][[
+    # List all types of pokemon
+    __type_list(df_pokedex)
+
+    pokemon_type = input(f"\nDigit the pokemon type: (ex.: Fire, Water, Steel): ")
+                                         
+    df_result_pokemon_by_type = df_pokedex[(df_pokedex["type1"] == pokemon_type.lower()) | 
+                                           (df_pokedex["type2"] == pokemon_type.lower())][[
+                                               "pokedex_number", 
+                                               "name", 
+                                               "type1", 
+                                               "type2", 
+                                               "generation"]].reset_index(drop=True)
+
+    if(df_result_pokemon_by_type.empty):
+        print(f"\nInvalid type name. No pokemon was found by \"{pokemon_type}\" type")
+    else:         
+        print(f"\n{df_result_pokemon_by_type}")
+
+    input("Press enter to continue...")
+
+    pass
+
+
+# 4 - Search for all pokemon from a specific generation, in this case, "Generation 1"
+def __search_pokemon_by_generation(df_pokedex):
+
+    def search(generation):        
+
+        pokemon_list =  df_pokedex[df_pokedex["generation"] == generation][[
             "pokedex_number", 
             "name",
             "japanese_name",
@@ -253,152 +398,129 @@ def __search_pokemon_by_generation(pokedex):
 
             ]].reset_index(drop=True)   
         
-        print(pokemon_list)
+        # Draw Ivysaur Pokemon
+        ivysaur()
 
-        print(f"Total number of Pokemon in Generation {generation}: " + str(pokemon_list["pokedex_number"].count()))
+        print(f"\n{pokemon_list}")
+
+        print(f"\nTotal number of Pokemons in Generation {generation}: " + str(pokemon_list["pokedex_number"].count()))
+
+        input("Press enter to continue...\n")
 
         pass
 
+
+    # Draw Caterpie Pokemon
+    caterpie() 
+
+    __list_of_generations(df_pokedex)
+
     while True:
-        try:
-            generation_input = int(input(f"Enter the generation number (1 to {pokedex['generation'].max()}): "))
+        try:       
             
-            if generation_input < 1 or generation_input > pokedex["generation"].max():
-                print(f"Invalid input. Please enter a number between 1 and {pokedex['generation'].max()}.")
+            generation_input = int(input(f"Enter the generation number (1 to {df_pokedex['generation'].max()}): "))
+            
+            if generation_input < 1 or generation_input > df_pokedex["generation"].max():
+                print(f"Invalid input. Please enter a number between 1 and {df_pokedex['generation'].max()}.")
                 continue
             else:
                 search(generation_input)
                 break
 
         except ValueError:
-            print(f"Invalid input. Please enter a number between 1 and {pokedex['generation'].max()}.")
+            print(f"Invalid input. Please enter a number between 1 and {df_pokedex['generation'].max()}.")
             continue
 
     pass
 
 
-# Create a menu with system options
-def __menu():
+# 5 - List of main and side pokemon games
+def __list_of_games():
 
-    option = -1
+    main_games = ["Generation I: Red, Blue, Green & Yellow ", 
+                     "Generation II: Gold, Silver & Crystal", 
+                     "Generation III: Ruby, Sapphire & Emerald", 
+                     "Generation IV: Diamond, Pearl & Platinum", 
+                     "Generation V: Black & White", 
+                     "Generation VI: X & Y", 
+                     "Generation VII: Sun & Moon"]
 
-    print(__pokemondraw())
+    
+    side_games = ["Pokemon Stadium", 
+                  "Pokemon Snap", 
+                  "Pokemon Mystery Dungeon", 
+                  "Pokemon Ranger", 
+                  "Pokemon Go"] 
 
-    menu = f"""POKEDEX --- Version {version}
+    # Draw Bulbasaur Pokemon
+    bulbasaur()
 
-    1 - List all pokemon throughout all generations
-    2 - List all generations main games
-    3 - Search all pokemon of a specific type
-    4 - Search all pokemon from a specific generation
-    5 - List all pokemon types
-    0 - Exit
+    print(f"\nList of all games in the series:\n")
 
-    """
+    print(f"\nMain games of each generation:\n")
 
-    while option != 0:        
+    for i in main_games:
+        print(i)
 
-        try:
+    print(f"\nSide games of the Pokemon universe:\n")
 
-            print(menu)
+    for i in side_games:
+        print(i)
 
-            option = int(input(f"Choose option number: "))
-            
-            options = [1,2,3,4,5,6,0]
+    input("Press enter to continue...\n")
 
-            if option not in options:
-                continue
+    pass
+ 
+   
+# 6 - List of all generations of pokemon games
+def __list_of_generations(df_pokedex):
 
-            match option:
+    generation = []
+    i = 0
+    while i < len(df_pokedex["generation"].unique()):
 
-                # 1 - List all pokemon throughout all generations
-                case 1: 
-                    print(__pokemon_list(pokedex))
-                
-                # 2 - List all generations main games
-                case 2: 
-                    __list_of_generations(pokedex)
-                
-                # 3 - Search all pokemon of a specific type
-                case 3: 
+        games = ["Red, Blue, Green & Yellow", 
+                     "Gold, Silver & Crystal", 
+                     "Ruby, Sapphire & Emerald", 
+                     "Diamond, Pearl & Platinum", 
+                     "Black & White", 
+                     "X & Y", 
+                     "Sun & Moon"]
+        
+        generation.append({
+                        "Generation" : i + 1,
+                        "Games" : games[i],
+                        "count" : df_pokedex[df_pokedex["generation"] == i + 1]["pokedex_number"].count()
+                      })
+        
+        i += 1
 
-                    while True:
-                        try:
+    for ill in generation:
+        print(f"Generation " + str(ill['Generation']) + "\n" +
+                "Games: " + ill['Games'] + "\n" +
+                "Number of Pokemon: " + str(ill['count'])+ "\n")
 
-                            # List all types of pokemon
-                            __type_list(pokedex)
+    print("Total number of Pokemon: " + str(df_pokedex["pokedex_number"].count())) 
 
-                            pokemon_type = input(f"Digit the pokemon type: ")
-                            
-                            print(__search_pokemon_by_type(pokedex, pokemon_type.lower()))
+    input("Press enter to continue...\n")
 
-                            break
-                        
-                        except ValueError:
+    pass
 
-                            print("Invalid Option.")
+# 7 - Clean Screen
+def __cleanScreen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    pass
 
+# - End of Menu Options (lin 177 - 512)
 
-                
-                #4 - Search all pokemon from a specific generation
-                case 4: 
-                    continue
-                
-                # 5 - List all pokemon types
-                case 5: 
-                    continue
-                
-                # 0 - Exit
-                case 0: 
-                    break
-            
+# ---------------------------------------
 
-        except ValueError:
-            print(f"Invalid option!")
+### Test Section
 
-            continue
-
-
-
-
-
-### Sessão de testes
  
 
-#__menu()
+### End of Test Section
 
+### To do list:
 
-# List all pokemons
-print("Cheguei")
-
-
-#__pokemon_list(pokedex) # List all pokemon throughout all generations with their respective attributes
-#__search_pokemon(pokedex) # Search for a specific pokemon by its pokedex number and return its attributes
-#__list_of_generations(pokedex) # Resume of each generation with the number of pokemon in each one and the main games of each generation
-#__list_of_games() # List all main games of each generation
-
-__type_list(pokedex)
-__search_pokemon_by_type(pokedex, "fire") # Create funcion to show types, then, search for all pokemon of a specific type, in this case, "fire"
-print("Terminei")
-
-#bulbasaur()
-#dragonite()
-#charizard()
-
-#__list_of_games()
-
-
-# List all types of pokemon
-#__type_list(pokedex)
-
-# Resume of each generation
-#__list_of_generations(pokedex)
-
-# Search for all pokemon of a specific type, in this case, "fire"
-#print(__search_pokemon_by_type(pokedex, "fire"))
-
-# Search for all pokemon of a specific generation, in this case, "Generation 1"
-#__search_pokemon_by_generation(pokedex)
-
-
-
-### Fim da sessão de testes
+###
